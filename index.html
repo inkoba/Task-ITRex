@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table Task</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <div class="wrapper">
+
+    <div class="info">
+      <div class="search">
+        <form class="search-form" method="GET">
+          <input type="text" placeholder="Search by name: " class="search-input">
+        </form>
+      </div>
+
+
+      <select name="select" class="select" size="1">
+        <option value="WI" selected="selected">Filter by state</option>
+        <option value="WI">WI</option>
+        <option value="TN">TN</option>
+        <option value="FL">FL</option>
+        <option value="NE">NE</option>
+        <option value="NY">NY</option>
+        <option value="NM">NM</option>
+        <option value="ND">ND</option>
+        <option value="AZ">AZ</option>
+        <option value="OH">OH</option>
+      </select>
+    </div>
+
+    <table border="1" id="generation-tr">
+      <tr>
+        <th id="id1">id</th>
+        <th id="first-name">First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>State</th>
+      </tr>
+
+    </table>
+
+
+    <div class="general-page">
+      <div class="one page" id="one">1</div>
+      <div class="two page" id="two">2</div>
+      <div class="three page" id="three">3</div>
+    </div>
+
+
+    <div class="hide" id="description"></div>
+
+  </div>
+  <script src="js-script.js"></script>
+</body>
+
+</html>
