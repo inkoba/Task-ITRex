@@ -1,4 +1,4 @@
-// получаю данные с сервера
+// get data from server
 const getResours = async () => {
     const res = await fetch('https://itrex-react-lab-files.s3.eu-central-1.amazonaws.com/react-test-api.json');
 
@@ -6,7 +6,7 @@ const getResours = async () => {
 }
 
 
-//генерирую строки таблицы
+//generating table rows
 const generationPosts = async () => {
     const data = await getResours();
     const tr = document.querySelector('#generation-tr');
@@ -29,8 +29,7 @@ const generationPosts = async () => {
 generationPosts();
 
 
-
-//при клине на строку и получаю дата-ид
+//getting date-id, add class 
 document.addEventListener('click', (event) => {
     event.preventDefault();
     const description = document.querySelector('#description');
@@ -51,7 +50,7 @@ document.addEventListener('click', (event) => {
 })
 
 
-//функция получаю с сервера данные и записываю в описание
+//get data from the server and write to the description
 const generatDiscriptionPost = async (arg) => {
     const data = await getResours();
     const descript = document.querySelector('#description');
@@ -71,9 +70,8 @@ const generatDiscriptionPost = async (arg) => {
     });
 };
 
-// поиск по таблице
+// table search
 const displaySearchTasks = async (allTasks) => {
-    /*  allTasks = allTasks || await getResours(); */
     const searchTasks = document.querySelector('#generation-tr');
     searchTasks.innerHTML = `
         <tr>
@@ -113,13 +111,10 @@ const inputSearchTasks = async (event) => {
 };
 
 
-
 // input search
-
 if (document.querySelector(".search-input")) {
     document.querySelector(".search-input").addEventListener("input", inputSearchTasks);
 };
-
 
 
 // select
@@ -138,8 +133,7 @@ const selectFunc = async () => {
 }
 document.querySelector('.select').addEventListener('change', selectFunc);
 
-// станицы
-
+// pages
 const newPageOne = async () => {
     const data = await getResours();
     const tr = document.querySelector('#generation-tr');
@@ -233,8 +227,7 @@ document.querySelector('#three').addEventListener('click', newPageThree);
 
 
 
-// сортировка по таблице
-
+// sort table
 document.addEventListener('click', (event) => {
     event.preventDefault();
     if (event.target.tagName === 'TH') {
