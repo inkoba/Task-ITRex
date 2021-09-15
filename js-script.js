@@ -30,7 +30,7 @@ generationPosts();
 
 
 //getting date-id, add class 
-document.addEventListener('click', (event) => {
+const getId = (event) => {
     event.preventDefault();
     const description = document.querySelector('#description');
     let profileId = 0;
@@ -47,8 +47,8 @@ document.addEventListener('click', (event) => {
 
     generatDiscriptionPost(profileId);
 
-})
-
+}
+document.addEventListener('click', getId);
 
 //get data from the server and write to the description
 const generatDiscriptionPost = async (arg) => {
@@ -102,7 +102,7 @@ const inputSearchTasks = async (event) => {
     const allTasks = await getResours();
 
     const filterTasks = allTasks.filter((task) => {
-        if (task.firstName[0].toLowerCase().trim() === searchValue[0]) {
+        if (task.firstName[0].toLowerCase().trim() === searchValue[0] || searchValue === "") {
             return task.firstName.toLowerCase().includes(searchValue)
         };
     });
@@ -226,8 +226,58 @@ document.querySelector('#two').addEventListener('click', newPageTwo);
 document.querySelector('#three').addEventListener('click', newPageThree);
 
 
-
 // sort table
+const sortTable = (index) => {
+    let i, x, y, shouldSwitch, switchcount = 0;
+    const table = document.querySelector("#generation-tr");
+    let switching = true;
+    let dir = "asc";
+
+    while (switching) {
+        switching = false;
+        const rows = table.querySelectorAll("tr");
+
+        for (i = 1; i < (rows.length - 1); i++) {
+
+            shouldSwitch = false;
+
+            x = rows[i].querySelectorAll("td")[index];
+            y = rows[i + 1].querySelectorAll("td")[index];
+
+            if (index === 0 && dir == "asc") {
+                if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+        }
+        if (shouldSwitch) {
+
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+
+            switchcount++;
+        } else {
+
+            if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+            }
+        }
+    }
+}
+
+
 document.addEventListener('click', (event) => {
     event.preventDefault();
     if (event.target.tagName === 'TH') {
@@ -236,17 +286,10 @@ document.addEventListener('click', (event) => {
 
         const index = [...event.target.parentNode.cells].indexOf(event.target);
 
-        const collator = new Intl.Collator(['en', 'ru'], { numeric: true });
-        const comparator = (index, order) => (a, b) => order * collator.compare(
-            a.children[index].innerHTML,
-            b.children[index].innerHTML
-        );
+        for (const cell of event.target.parentNode.cells) {
+            cell.classList.toggle('sorted', cell === event.target);
+        };
 
-
-        for (const cell of event.target.parentNode.cells)
-            console.log(cell.classList.toggle('sorted', cell === event.target));
-
-        for (const tBody of event.target.closest('table').tBodies)
-            tBody.append(...[...tBody.rows].sort(comparator(index, order)));
+        sortTable(index);
     }
 })

@@ -30,7 +30,7 @@ th{
 
 td, th{
     text-align: center;
-    width: 150px;
+    min-width: 150px;
     height: 30px;
     cursor: pointer;
 }
@@ -73,6 +73,11 @@ td, th{
     border-radius: 5px;
 }
 
+input{
+    height: 30px;
+    padding: 10px;
+    border-radius: 5px;
+}
 
 .general-page{
     display: flex;
