@@ -6,26 +6,68 @@ const getResours = async () => {
 }
 
 
-//generating table rows
 const generationPosts = async () => {
     const data = await getResours();
-    const tr = document.querySelector('#generation-tr');
+    const pagination = document.querySelector('#pagination');
 
-    data.forEach((post, index) => {
-        if (1 <= index && index <= 20) {
-            tr.innerHTML += `
-                <tr class='post' data-id="${post.id}">
-                    <td>${post.id}</td>
-                    <td>${post.firstName}</td>
-                    <td>${post.lastName}</td>
-                    <td>${post.email}</td>
-                    <td>${post.phone}</td>
-                    <td>${post.adress.state}</td>
+    const numPost = 20;
+    const countPage = Math.ceil(data.length / numPost);
+    const items = [];
+
+    let showPage = (function () {
+        let active;
+        const table = document.querySelector('#table');
+        return function (item) {
+
+            if (active) {
+                active.classList.remove('active');
+            }
+            active = item;
+            item.classList.add('active');
+
+            let pageNum = Number(item.innerHTML);
+            let start = (pageNum - 1) * numPost;
+            let end = start + numPost;
+            let posts = data.slice(start, end);
+
+            table.innerHTML = `
+                <tr>
+                    <th id="id1">id</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>State</th>
                 </tr>
-        `
-        }
-    })
-};
+            `;
+            posts.forEach((post) => {
+                table.innerHTML += `
+                        <tr class='post' data-id="${post.id}">
+                            <td>${post.id}</td>
+                            <td>${post.firstName}</td>
+                            <td>${post.lastName}</td>
+                            <td>${post.email}</td>
+                            <td>${post.phone}</td>
+                            <td>${post.adress.state}</td>
+                        </tr>
+                `
+            });
+        };
+    }());
+
+    for (let i = 1; i <= countPage; i++) {
+        let a = document.createElement('a');
+        a.innerHTML = i;
+        pagination.appendChild(a);
+        items.push(a);
+    };
+    showPage(items[0]);
+
+    items.forEach(el => el.addEventListener('click', function () {
+        showPage(el);
+    }))
+
+}
 generationPosts();
 
 
@@ -72,7 +114,7 @@ const generatDiscriptionPost = async (arg) => {
 
 // table search
 const displaySearchTasks = async (allTasks) => {
-    const searchTasks = document.querySelector('#generation-tr');
+    const searchTasks = document.querySelector('#table');
     searchTasks.innerHTML = `
         <tr>
             <th id="id1">id</th>
@@ -133,103 +175,10 @@ const selectFunc = async () => {
 }
 document.querySelector('.select').addEventListener('change', selectFunc);
 
-// pages
-const newPageOne = async () => {
-    const data = await getResours();
-    const tr = document.querySelector('#generation-tr');
-    tr.innerHTML = `
-        <tr>
-            <th id="id1">id</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>State</th>
-        </tr>
-    `;
-    data.forEach((post, index) => {
-        if (1 <= index && index <= 20) {
-            tr.innerHTML += `
-                <tr class='post' data-id="${post.id}">
-                    <td>${post.id}</td>
-                    <td>${post.firstName}</td>
-                    <td>${post.lastName}</td>
-                    <td>${post.email}</td>
-                    <td>${post.phone}</td>
-                    <td>${post.adress.state}</td>
-                </tr>
-        `
-        }
-    })
-
-};
-
-const newPageTwo = async () => {
-    const data = await getResours();
-    const tr = document.querySelector('#generation-tr');
-    tr.innerHTML = `
-        <tr>
-            <th id="id1">id</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>State</th>
-        </tr>
-    `;
-    data.forEach((post, index) => {
-        if (20 < index && index <= 40) {
-            tr.innerHTML += `
-                <tr class='post' data-id="${post.id}">
-                    <td>${post.id}</td>
-                    <td>${post.firstName}</td>
-                    <td>${post.lastName}</td>
-                    <td>${post.email}</td>
-                    <td>${post.phone}</td>
-                    <td>${post.adress.state}</td>
-                </tr>
-        `
-        }
-    })
-};
-
-const newPageThree = async () => {
-    const data = await getResours();
-    const tr = document.querySelector('#generation-tr');
-    tr.innerHTML = `
-        <tr>
-            <th id="id1">id</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>State</th>
-        </tr>
-    `;
-    data.forEach((post, index) => {
-        if (40 < index && index <= 60) {
-            tr.innerHTML += `
-                <tr class='post' data-id="${post.id}">
-                    <td>${post.id}</td>
-                    <td>${post.firstName}</td>
-                    <td>${post.lastName}</td>
-                    <td>${post.email}</td>
-                    <td>${post.phone}</td>
-                    <td>${post.adress.state}</td>
-                </tr>
-        `
-        }
-    })
-};
-document.querySelector('#one').addEventListener('click', newPageOne);
-document.querySelector('#two').addEventListener('click', newPageTwo);
-document.querySelector('#three').addEventListener('click', newPageThree);
-
-
 // sort table
 const sortTable = (index) => {
     let i, x, y, shouldSwitch, switchcount = 0;
-    const table = document.querySelector("#generation-tr");
+    const table = document.querySelector("#table");
     let switching = true;
     let dir = "asc";
 
