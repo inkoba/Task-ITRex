@@ -53,10 +53,6 @@ td, th{
     height: 70px;
 }
 
-.hide{
-    overflow: hidden;
-}
-
 .info{
     display: flex;
     flex-direction: row;
